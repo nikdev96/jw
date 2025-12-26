@@ -25,11 +25,14 @@
 
 ## Доменное имя
 
-**Домен:** [ТУТ_ВВЕДИ_СВОЙ_ДОМЕН] (например: `justweed.example.com`)
+**Домен:** `surfjw.surf`
 
-**DNS записи уже настроены:**
-- A-запись указывает на IP этого сервера
-- (проверь: `dig +short justweed.example.com` должен показать IP сервера)
+**IP сервера:** `34.142.187.226`
+
+**DNS записи настроены:**
+- A-запись `surfjw.surf` → 34.142.187.226 ✅
+- A-запись `www.surfjw.surf` → 34.142.187.226 ✅
+- (проверено: `dig +short surfjw.surf` возвращает правильный IP)
 
 ---
 
@@ -177,7 +180,7 @@ ENVIRONMENT=production
 DEBUG=False
 
 # CORS (домен без https://)
-ALLOWED_ORIGINS=https://justweed.example.com
+ALLOWED_ORIGINS=https://surfjw.surf
 
 # API
 API_V1_PREFIX=/api/v1
@@ -189,7 +192,6 @@ EOF
 - `ТВОЙ_ТОКЕН_БОТА_ОТ_BOTFATHER` → токен бота
 - `ТВОЙ_БОТ_USERNAME` → username бота (без @)
 - `СГЕНЕРИРУЙ_СЛУЧАЙНЫЙ_КЛЮЧ_64_СИМВОЛА` → openssl rand -hex 32
-- `justweed.example.com` → твой домен
 
 **4.4. Примени миграции:**
 
@@ -231,11 +233,9 @@ npm install
 
 ```bash
 cat > .env << 'EOF'
-VITE_API_URL=https://justweed.example.com/api/v1
+VITE_API_URL=https://surfjw.surf/api/v1
 EOF
 ```
-
-**Замени** `justweed.example.com` на твой домен.
 
 **5.3. Собери production build:**
 
@@ -262,7 +262,7 @@ sudo nano /etc/nginx/sites-available/justweed
 server {
     listen 80;
     listen [::]:80;
-    server_name justweed.example.com;
+    server_name surfjw.surf;
 
     location /.well-known/acme-challenge/ {
         root /var/www/certbot;
@@ -277,11 +277,11 @@ server {
 server {
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
-    server_name justweed.example.com;
+    server_name surfjw.surf;
 
     # SSL certificates (будут созданы certbot'ом)
-    ssl_certificate /etc/letsencrypt/live/justweed.example.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/justweed.example.com/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/surfjw.surf/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/surfjw.surf/privkey.pem;
 
     # SSL настройки
     ssl_protocols TLSv1.2 TLSv1.3;
@@ -328,8 +328,6 @@ server {
 }
 ```
 
-**Замени** `justweed.example.com` на твой домен (4 места).
-
 **6.2. Включи конфигурацию:**
 
 ```bash
@@ -365,7 +363,7 @@ sudo nano /etc/nginx/sites-available/justweed
 sudo bash -c 'cat > /etc/nginx/sites-available/justweed-temp << EOF
 server {
     listen 80;
-    server_name justweed.example.com;
+    server_name surfjw.surf;
 
     location /.well-known/acme-challenge/ {
         root /var/www/certbot;
@@ -386,7 +384,7 @@ sudo nginx -t && sudo systemctl reload nginx
 **7.3. Получи сертификат:**
 
 ```bash
-sudo certbot certonly --webroot -w /var/www/certbot -d justweed.example.com
+sudo certbot certonly --webroot -w /var/www/certbot -d surfjw.surf
 ```
 
 → Следуй инструкциям
@@ -469,13 +467,13 @@ curl http://localhost:8000/api/v1/categories
 
 **9.2. Проверь Frontend:**
 ```bash
-curl -I https://justweed.example.com
+curl -I https://surfjw.surf
 ```
 → Должен вернуть 200 OK
 
 **9.3. Открой в браузере:**
 ```
-https://justweed.example.com
+https://surfjw.surf
 ```
 → Должна открыться главная страница JUSTWEED
 
@@ -490,7 +488,7 @@ https://justweed.example.com
 → Bot Settings
 → Menu Button
 → Configure Menu Button
-→ URL: https://justweed.example.com
+→ URL: https://surfjw.surf
 ```
 
 **10.2. Проверь работу:**
