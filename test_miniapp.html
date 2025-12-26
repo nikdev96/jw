@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BotShop Test</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--tg-theme-bg-color, #ffffff);
+            color: var(--tg-theme-text-color, #000000);
+            padding: 16px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: var(--tg-theme-text-color);
+        }
+
+        .section {
+            background: var(--tg-theme-secondary-bg-color, #f4f4f5);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .section h2 {
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .label {
+            color: var(--tg-theme-hint-color, #999999);
+        }
+
+        .value {
+            font-weight: 500;
+        }
+
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .category-card {
+            background: var(--tg-theme-button-color, #3390ec);
+            color: var(--tg-theme-button-text-color, #ffffff);
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .products {
+            margin-top: 12px;
+        }
+
+        .product-card {
+            background: #ffffff;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .product-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .product-price {
+            color: var(--tg-theme-button-color, #3390ec);
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .btn {
+            background: var(--tg-theme-button-color, #3390ec);
+            color: var(--tg-theme-button-text-color, #ffffff);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: var(--tg-theme-hint-color);
+        }
+
+        .error {
+            background: #ff3b30;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛍 BotShop Test</h1>
+
+        <div class="section">
+            <h2>Telegram WebApp Info</h2>
+            <div class="info-row">
+                <span class="label">User ID:</span>
+                <span class="value" id="userId">-</span>
+            </div>
+            <div class="info-row">
+                <span class="label">Username:</span>
+                <span class="value" id="username">-</span>
+            </div>
+            <div class="info-row">
+                <span class="label">Name:</span>
+                <span class="value" id="fullName">-</span>
+            </div>
+            <div class="info-row">
+                <span class="label">Platform:</span>
+                <span class="value" id="platform">-</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>API Test</h2>
+            <div class="info-row">
+                <span class="label">Backend:</span>
+                <span class="value" style="font-size: 10px;">serveousercontent.com</span>
+            </div>
+            <div class="info-row">
+                <span class="label">Status:</span>
+                <span class="value" id="apiStatus">Checking...</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📂 Категории</h2>
+            <div id="categories" class="loading">Загрузка...</div>
+        </div>
+
+        <div class="section">
+            <h2>📦 Товары</h2>
+            <div id="products" class="loading">Загрузка...</div>
+        </div>
+
+        <div class="section">
+            <h2>🧪 Test Order</h2>
+            <button class="btn" onclick="testCreateOrder()">Создать тестовый заказ</button>
+            <div id="orderResult" style="margin-top: 12px;"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'https://326334561eb58947-171-6-227-206.serveousercontent.com/api/v1';
+        let tg = window.Telegram.WebApp;
+
+        // Initialize
+        tg.ready();
+        tg.expand();
+
+        // Display user info
+        if (tg.initDataUnsafe.user) {
+            const user = tg.initDataUnsafe.user;
+            document.getElementById('userId').textContent = user.id;
+            document.getElementById('username').textContent = user.username || '-';
+            document.getElementById('fullName').textContent = `${user.first_name || ''} ${user.last_name || ''}`.trim();
+        }
+        document.getElementById('platform').textContent = tg.platform;
+
+        // Check API health
+        async function checkAPI() {
+            try {
+                const response = await fetch(`${API_URL.replace('/api/v1', '')}/health`);
+                const data = await response.json();
+                document.getElementById('apiStatus').textContent = data.status === 'ok' ? '✅ OK' : '❌ Error';
+            } catch (error) {
+                document.getElementById('apiStatus').textContent = '❌ Offline';
+            }
+        }
+
+        // Load categories
+        async function loadCategories() {
+            try {
+                const response = await fetch(`${API_URL}/categories`);
+                const categories = await response.json();
+
+                const html = categories.map(cat => `
+                    <div class="category-card" onclick="loadProductsByCategory(${cat.id})">
+                        <div>${cat.name}</div>
+                    </div>
+                `).join('');
+
+                document.getElementById('categories').innerHTML = html;
+            } catch (error) {
+                document.getElementById('categories').innerHTML = `<div class="error">Ошибка: ${error.message}</div>`;
+            }
+        }
+
+        // Load products
+        async function loadProducts(categoryId = null) {
+            try {
+                const url = categoryId
+                    ? `${API_URL}/products?category_id=${categoryId}`
+                    : `${API_URL}/products`;
+
+                const response = await fetch(url);
+                const products = await response.json();
+
+                const html = products.slice(0, 5).map(product => `
+                    <div class="product-card">
+                        <div class="product-name">${product.name}</div>
+                        <div>${product.description || ''}</div>
+                        <div class="product-price">${product.price} ₽</div>
+                    </div>
+                `).join('');
+
+                document.getElementById('products').innerHTML = html || '<div class="loading">Нет товаров</div>';
+            } catch (error) {
+                document.getElementById('products').innerHTML = `<div class="error">Ошибка: ${error.message}</div>`;
+            }
+        }
+
+        function loadProductsByCategory(categoryId) {
+            document.getElementById('products').innerHTML = '<div class="loading">Загрузка...</div>';
+            loadProducts(categoryId);
+        }
+
+        // Test create order
+        async function testCreateOrder() {
+            const resultDiv = document.getElementById('orderResult');
+            resultDiv.innerHTML = '<div class="loading">Создание заказа...</div>';
+
+            try {
+                const orderData = {
+                    items: [
+                        { product_id: 1, quantity: 1 },
+                        { product_id: 2, quantity: 2 }
+                    ],
+                    delivery_address: "ул. Тестовая, д. 1",
+                    phone: "+79001234567",
+                    comment: "Тестовый заказ из Mini App"
+                };
+
+                const response = await fetch(`${API_URL}/orders`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `tma ${tg.initData}`
+                    },
+                    body: JSON.stringify(orderData)
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.detail || 'Unknown error');
+                }
+
+                const order = await response.json();
+                resultDiv.innerHTML = `
+                    <div style="background: #34c759; color: white; padding: 12px; border-radius: 8px;">
+                        ✅ Заказ #${order.id} создан!<br>
+                        Сумма: ${order.total_amount} ₽<br>
+                        Статус: ${order.status}
+                    </div>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">❌ Ошибка: ${error.message}</div>`;
+            }
+        }
+
+        // Initialize
+        checkAPI();
+        loadCategories();
+        loadProducts();
+    </script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+{
+  "categories": [
+    {
+      "id": 1,
+      "name": "Flower",
+      "slug": "flower",
+      "sort_order": 1,
+      "is_active": true,
+      "is_info_only": false,
+      "coming_soon": false,
+      "children": [
+        {"id": 11, "name": "Premium Strains", "slug": "premium-strains", "sort_order": 1},
+        {"id": 12, "name": "Exotic Genetics", "slug": "exotic-genetics", "sort_order": 2},
+        {"id": 13, "name": "Indica", "slug": "indica", "sort_order": 3},
+        {"id": 14, "name": "Sativa", "slug": "sativa", "sort_order": 4},
+        {"id": 15, "name": "Hybrid", "slug": "hybrid", "sort_order": 5},
+        {"id": 16, "name": "Top Shelf", "slug": "top-shelf", "sort_order": 6},
+        {"id": 17, "name": "Budget Weed", "slug": "budget-weed", "sort_order": 7},
+        {"id": 18, "name": "New Drops", "slug": "new-drops", "sort_order": 8},
+        {"id": 19, "name": "Limited Edition", "slug": "limited-edition", "sort_order": 9}
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Edibles",
+      "slug": "edibles",
+      "sort_order": 2,
+      "is_active": true,
+      "is_info_only": false,
+      "coming_soon": false,
+      "children": [
+        {"id": 21, "name": "Cookies / Brownies", "slug": "cookies-brownies", "sort_order": 1},
+        {"id": 22, "name": "Gummies", "slug": "gummies", "sort_order": 2},
+        {"id": 23, "name": "Space Snacks", "slug": "space-snacks", "sort_order": 3},
+        {"id": 24, "name": "Microdose Edibles", "slug": "microdose-edibles", "sort_order": 4},
+        {"id": 25, "name": "Strong Edibles", "slug": "strong-edibles", "sort_order": 5}
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Pre-Rolls",
+      "slug": "pre-rolls",
+      "sort_order": 3,
+      "is_active": true,
+      "is_info_only": false,
+      "coming_soon": false,
+      "children": [
+        {"id": 31, "name": "Classic Joints", "slug": "classic-joints", "sort_order": 1},
+        {"id": 32, "name": "Infused Joints", "slug": "infused-joints", "sort_order": 2},
+        {"id": 33, "name": "Mini Joints", "slug": "mini-joints", "sort_order": 3},
+        {"id": 34, "name": "Gift Joints", "slug": "gift-joints", "sort_order": 4}
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Delivery",
+      "slug": "delivery",
+      "sort_order": 4,
+      "is_active": true,
+      "is_info_only": true,
+      "coming_soon": false,
+      "children": [
+        {"id": 41, "name": "Fast Delivery", "slug": "fast-delivery", "sort_order": 1},
+        {"id": 42, "name": "Night Delivery", "slug": "night-delivery", "sort_order": 2},
+        {"id": 43, "name": "Pick Up", "slug": "pick-up", "sort_order": 3},
+        {"id": 44, "name": "Island Delivery", "slug": "island-delivery", "sort_order": 4}
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Payments",
+      "slug": "payments",
+      "sort_order": 5,
+      "is_active": true,
+      "is_info_only": true,
+      "coming_soon": false,
+      "children": [
+        {"id": 51, "name": "Cash", "slug": "cash", "sort_order": 1},
+        {"id": 52, "name": "USDT", "slug": "usdt", "sort_order": 2},
+        {"id": 53, "name": "USDT → Cash", "slug": "usdt-cash", "sort_order": 3},
+        {"id": 54, "name": "Crypto Support", "slug": "crypto-support", "sort_order": 4}
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Education",
+      "slug": "education",
+      "sort_order": 6,
+      "is_active": true,
+      "is_info_only": true,
+      "coming_soon": false,
+      "children": [
+        {"id": 61, "name": "Strain Info", "slug": "strain-info", "sort_order": 1},
+        {"id": 62, "name": "Effects & Terpenes", "slug": "effects-terpenes", "sort_order": 2},
+        {"id": 63, "name": "How to Choose Weed", "slug": "how-to-choose", "sort_order": 3},
+        {"id": 64, "name": "Storage Tips", "slug": "storage-tips", "sort_order": 4}
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Merch",
+      "slug": "merch",
+      "sort_order": 7,
+      "is_active": true,
+      "is_info_only": false,
+      "coming_soon": true,
+      "children": [
+        {"id": 71, "name": "T-Shirts", "slug": "t-shirts", "sort_order": 1},
+        {"id": 72, "name": "Caps", "slug": "caps", "sort_order": 2},
+        {"id": 73, "name": "Stickers", "slug": "stickers", "sort_order": 3},
+        {"id": 74, "name": "Lighters", "slug": "lighters", "sort_order": 4}
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Support",
+      "slug": "support",
+      "sort_order": 8,
+      "is_active": true,
+      "is_info_only": true,
+      "coming_soon": false,
+      "children": [
+        {"id": 81, "name": "Contact Manager", "slug": "contact-manager", "sort_order": 1},
+        {"id": 82, "name": "FAQ", "slug": "faq", "sort_order": 2},
+        {"id": 83, "name": "Order Status", "slug": "order-status", "sort_order": 3}
+      ]
+    }
+  ]
+}
