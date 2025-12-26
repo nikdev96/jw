@@ -77,7 +77,7 @@ export const CartPage = () => {
                   {item.product.name}
                 </h3>
                 <p className="text-tg-button font-bold mb-2">
-                  {item.product.price} ₽
+                  {item.product.price} ฿
                 </p>
                 <div className="flex items-center gap-2">
                   <button
@@ -114,11 +114,11 @@ export const CartPage = () => {
         <div className="bg-gray-100 rounded-lg p-4 mb-4">
           <div className="flex justify-between items-center mb-2">
             <span className="text-gray-600">Subtotal</span>
-            <span className="font-semibold">{total.toFixed(2)} ₽</span>
+            <span className="font-semibold">{total.toFixed(2)} ฿</span>
           </div>
           <div className="flex justify-between items-center text-lg font-bold">
             <span>Total</span>
-            <span>{total.toFixed(2)} ₽</span>
+            <span>{total.toFixed(2)} ฿</span>
           </div>
         </div>
       </div>

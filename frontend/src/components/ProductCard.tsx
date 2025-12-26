@@ -42,7 +42,7 @@ export const ProductCard = ({ product, onAdd }: ProductCardProps) => {
 
         <div className="mt-auto pt-2">
           <div className="text-xl font-bold text-gray-900 mb-2">
-            {product.price.toLocaleString('ru-RU')} ₽
+            {product.price.toLocaleString('en-US')} ฿
           </div>
 
           <button

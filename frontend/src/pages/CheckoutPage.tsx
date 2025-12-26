@@ -90,13 +90,13 @@ export const CheckoutPage = () => {
                     {item.product.name} x{item.quantity}
                   </span>
                   <span className="font-medium">
-                    {(item.product.price * item.quantity).toFixed(2)} ₽
+                    {(item.product.price * item.quantity).toFixed(2)} ฿
                   </span>
                 </div>
               ))}
               <div className="pt-2 border-t border-gray-200 flex justify-between font-bold">
                 <span>Total</span>
-                <span>{total.toFixed(2)} ₽</span>
+                <span>{total.toFixed(2)} ฿</span>
               </div>
             </div>
           </div>
@@ -174,7 +174,7 @@ export const CheckoutPage = () => {
             ${loading ? 'opacity-50' : ''}
           `}
         >
-          {loading ? 'Placing Order...' : `Confirm Order (${total.toFixed(2)} ₽)`}
+          {loading ? 'Placing Order...' : `Confirm Order (${total.toFixed(2)} ฿)`}
         </button>
       </div>
     </>

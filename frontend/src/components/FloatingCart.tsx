@@ -34,7 +34,7 @@ export const FloatingCart = ({ cart }: FloatingCartProps) => {
           <span className="font-semibold text-base">View Cart</span>
         </div>
         <span className="font-bold text-lg">
-          {total.toLocaleString('ru-RU')} ₽
+          {total.toLocaleString('en-US')} ฿
         </span>
       </button>
     </div>

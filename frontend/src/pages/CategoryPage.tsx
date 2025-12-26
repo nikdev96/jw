@@ -256,7 +256,7 @@ export const CategoryPage = () => {
 
                                   <div className="mt-auto pt-1">
                                     <div className="text-sm font-bold text-gray-900 mb-1.5">
-                                      {product.price.toLocaleString('ru-RU')} ₽
+                                      {product.price.toLocaleString('en-US')} ฿
                                     </div>
 
                                     <motion.button
@@ -354,7 +354,7 @@ export const CategoryPage = () => {
 
                   <div className="mt-auto pt-2">
                     <div className="text-xl font-bold text-gray-900 mb-2">
-                      {product.price.toLocaleString('ru-RU')} ₽
+                      {product.price.toLocaleString('en-US')} ฿
                     </div>
 
                     <motion.button
