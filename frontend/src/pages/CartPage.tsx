@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { Header } from '../components/Header';
 import { EmptyState } from '../components/EmptyState';
 import { CartItem } from '../types';
@@ -9,6 +10,31 @@ import {
   removeFromCart,
   getCartTotal,
 } from '../utils/cart';
+
+// iOS-style tap feedback
+const tapScale: any = {
+  scale: 0.97,
+  transition: { type: 'tween', duration: 0.12, ease: 'easeOut' },
+};
+
+// Stagger animation for cart items
+const containerVariants: any = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.05,
+    },
+  },
+};
+
+const itemVariants: any = {
+  hidden: { opacity: 0, y: 8 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { type: 'tween', duration: 0.25, ease: 'easeOut' },
+  },
+};
 
 export const CartPage = () => {
   const navigate = useNavigate();
@@ -36,15 +62,16 @@ export const CartPage = () => {
         <Header title="Cart" showBack />
         <EmptyState
           icon="🛒"
-          title="Cart is empty"
+          title="Your cart is empty"
           description="Add some products to get started"
           action={
-            <button
+            <motion.button
               onClick={() => navigate('/')}
-              className="bg-green-600 text-white px-6 py-2 rounded-lg font-semibold"
+              whileTap={tapScale}
+              className="bg-accent text-dark-bg px-8 py-3.5 rounded-xl font-semibold shadow-lg shadow-accent/30 active:scale-95 transition-all"
             >
-              Browse Products
-            </button>
+              Browse Catalog
+            </motion.button>
           }
         />
       </>
@@ -54,82 +81,96 @@ export const CartPage = () => {
   return (
     <>
       <Header title="Cart" showBack />
-      <div className="p-4 pb-24">
-        <div className="space-y-3 mb-4">
+      <div className="min-h-screen bg-gray-50 dark:bg-dark-bg pb-32 transition-colors">
+        <motion.div
+          className="p-4 space-y-3 mb-4"
+          variants={containerVariants}
+          initial="hidden"
+          animate="show"
+        >
           {cart.map((item) => (
-            <div
+            <motion.div
               key={item.product.id}
-              className="bg-white rounded-lg p-4 shadow-sm flex gap-3"
+              variants={itemVariants}
+              className="bg-white dark:bg-dark-card rounded-2xl p-4 shadow-sm shadow-gray-200/50 dark:shadow-dark-border/20 flex gap-3 transition-colors"
             >
               {item.product.images[0] ? (
                 <img
                   src={item.product.images[0]}
                   alt={item.product.name}
-                  className="w-20 h-20 object-cover rounded-lg"
+                  className="w-20 h-20 object-cover rounded-xl flex-shrink-0"
                 />
               ) : (
-                <div className="w-20 h-20 bg-gray-200 rounded-lg flex items-center justify-center text-3xl">
+                <div className="w-20 h-20 bg-gradient-to-br from-green-50 to-green-100 dark:from-dark-surface dark:to-dark-card rounded-xl flex items-center justify-center text-3xl flex-shrink-0 transition-colors">
                   🌿
                 </div>
               )}
-              <div className="flex-1">
-                <h3 className="font-semibold text-gray-900 mb-1">
+              <div className="flex-1 min-w-0">
+                <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1 line-clamp-2 transition-colors">
                   {item.product.name}
                 </h3>
-                <p className="text-tg-button font-bold mb-2">
-                  {item.product.price} ฿
+                <p className="text-accent font-bold mb-2">
+                  {item.product.price.toLocaleString('en-US')} ฿
                 </p>
                 <div className="flex items-center gap-2">
-                  <button
+                  <motion.button
                     onClick={() =>
                       handleUpdateQuantity(item.product.id, item.quantity - 1)
                     }
-                    className="w-8 h-8 bg-gray-200 rounded-lg flex items-center justify-center active:scale-95"
+                    whileTap={tapScale}
+                    className="w-8 h-8 bg-gray-100 dark:bg-dark-surface rounded-lg flex items-center justify-center active:scale-95 text-gray-900 dark:text-gray-100 font-semibold transition-colors"
                   >
                     −
-                  </button>
-                  <span className="w-8 text-center font-medium">
+                  </motion.button>
+                  <span className="w-8 text-center font-medium text-gray-900 dark:text-gray-100 transition-colors">
                     {item.quantity}
                   </span>
-                  <button
+                  <motion.button
                     onClick={() =>
                       handleUpdateQuantity(item.product.id, item.quantity + 1)
                     }
-                    className="w-8 h-8 bg-gray-200 rounded-lg flex items-center justify-center active:scale-95"
+                    whileTap={tapScale}
+                    className="w-8 h-8 bg-gray-100 dark:bg-dark-surface rounded-lg flex items-center justify-center active:scale-95 text-gray-900 dark:text-gray-100 font-semibold transition-colors"
                   >
                     +
-                  </button>
-                  <button
+                  </motion.button>
+                  <motion.button
                     onClick={() => handleRemove(item.product.id)}
-                    className="ml-auto text-red-600 text-sm"
+                    whileTap={tapScale}
+                    className="ml-auto text-red-600 dark:text-red-400 text-sm font-medium active:scale-95 transition-colors"
                   >
                     Remove
-                  </button>
+                  </motion.button>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
-        <div className="bg-gray-100 rounded-lg p-4 mb-4">
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-gray-600">Subtotal</span>
-            <span className="font-semibold">{total.toFixed(2)} ฿</span>
-          </div>
-          <div className="flex justify-between items-center text-lg font-bold">
-            <span>Total</span>
-            <span>{total.toFixed(2)} ฿</span>
+        <div className="px-4">
+          <div className="bg-white dark:bg-dark-surface rounded-2xl p-4 mb-4 shadow-sm shadow-gray-200/50 dark:shadow-dark-border/20 transition-colors">
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-gray-600 dark:text-gray-400 transition-colors">Subtotal</span>
+              <span className="font-semibold text-gray-900 dark:text-gray-100 transition-colors">
+                {total.toLocaleString('en-US')} ฿
+              </span>
+            </div>
+            <div className="flex justify-between items-center text-lg font-bold">
+              <span className="text-gray-900 dark:text-gray-100 transition-colors">Total</span>
+              <span className="text-accent">{total.toLocaleString('en-US')} ฿</span>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-100">
-        <button
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-white dark:bg-dark-surface border-t border-gray-100 dark:border-dark-border transition-colors">
+        <motion.button
           onClick={() => navigate('/checkout')}
-          className="w-full bg-green-600 text-white py-4 rounded-xl font-semibold shadow-lg shadow-green-600/20 active:scale-95 transition-transform"
+          whileTap={tapScale}
+          className="w-full bg-accent text-dark-bg py-4 rounded-xl font-semibold shadow-lg shadow-accent/30 active:scale-95 transition-transform"
         >
           Proceed to Checkout
-        </button>
+        </motion.button>
       </div>
     </>
   );

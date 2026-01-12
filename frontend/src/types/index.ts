@@ -20,6 +20,8 @@ export interface Product {
   is_active: boolean;
   sort_order: number;
   category?: Category;
+  type?: string | null;
+  thc?: number | null;
 }
 
 export interface CartItem {

@@ -9,9 +9,9 @@ export const EmptyState = ({ icon = '📦', title, description, action }: EmptyS
   return (
     <div className="flex flex-col items-center justify-center py-16 px-6 text-center min-h-[60vh]">
       <div className="text-7xl mb-5 opacity-80">{icon}</div>
-      <h3 className="text-xl font-bold mb-2 text-gray-900">{title}</h3>
+      <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-gray-100 transition-colors">{title}</h3>
       {description && (
-        <p className="text-gray-500 mb-6 max-w-xs leading-relaxed">
+        <p className="text-gray-500 dark:text-gray-400 mb-6 max-w-xs leading-relaxed transition-colors">
           {description}
         </p>
       )}

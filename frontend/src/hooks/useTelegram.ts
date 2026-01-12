@@ -14,6 +14,9 @@ interface TelegramWebApp {
   ready: () => void;
   expand: () => void;
   close: () => void;
+  colorScheme: 'light' | 'dark';
+  onEvent: (eventType: string, callback: () => void) => void;
+  offEvent: (eventType: string, callback: () => void) => void;
   MainButton: {
     text: string;
     color: string;
@@ -61,6 +64,7 @@ export const useTelegram = () => {
   const [tg, setTg] = useState<TelegramWebApp | null>(null);
   const [user, setUser] = useState<TelegramWebApp['initDataUnsafe']['user']>(undefined);
   const [initData, setInitData] = useState<string>('');
+  const [colorScheme, setColorScheme] = useState<'light' | 'dark'>('light');
 
   useEffect(() => {
     const telegram = window.Telegram?.WebApp;
@@ -72,6 +76,7 @@ export const useTelegram = () => {
       setTg(telegram);
       setUser(telegram.initDataUnsafe.user);
       setInitData(telegram.initData);
+      setColorScheme(telegram.colorScheme || 'light');
 
       // Apply Telegram theme colors
       if (telegram.themeParams.bg_color) {
@@ -92,6 +97,18 @@ export const useTelegram = () => {
       if (telegram.themeParams.hint_color) {
         document.documentElement.style.setProperty('--tg-theme-hint-color', telegram.themeParams.hint_color);
       }
+
+      // Subscribe to theme changes
+      const handleThemeChange = () => {
+        setColorScheme(telegram.colorScheme || 'light');
+      };
+
+      telegram.onEvent('themeChanged', handleThemeChange);
+
+      // Cleanup
+      return () => {
+        telegram.offEvent('themeChanged', handleThemeChange);
+      };
     }
   }, []);
 
@@ -99,5 +116,6 @@ export const useTelegram = () => {
     tg,
     user,
     initData,
+    colorScheme,
   };
 };

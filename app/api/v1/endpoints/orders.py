@@ -1,5 +1,7 @@
-from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Request, status
 from sqlalchemy.ext.asyncio import AsyncSession
+from slowapi import Limiter
+from slowapi.util import get_remote_address
 
 from app.database import get_async_session
 from app.api.deps import get_current_user
@@ -9,10 +11,13 @@ from app.services.order_service import OrderService
 from app.services.telegram_bot import TelegramBotService
 
 router = APIRouter()
+limiter = Limiter(key_func=get_remote_address)
 
 
 @router.post("", response_model=Order, status_code=status.HTTP_201_CREATED)
+@limiter.limit("5/minute")
 async def create_order(
+    request: Request,
     order_data: OrderCreate,
     background_tasks: BackgroundTasks,
     current_user: User = Depends(get_current_user),
@@ -35,7 +40,9 @@ async def create_order(
 
 
 @router.get("/my", response_model=list[Order])
+@limiter.limit("30/minute")
 async def get_my_orders(
+    request: Request,
     current_user: User = Depends(get_current_user),
     session: AsyncSession = Depends(get_async_session)
 ):
@@ -48,7 +55,9 @@ async def get_my_orders(
 
 
 @router.get("/{order_id}", response_model=Order)
+@limiter.limit("30/minute")
 async def get_order(
+    request: Request,
     order_id: int,
     current_user: User = Depends(get_current_user),
     session: AsyncSession = Depends(get_async_session)

@@ -9,7 +9,7 @@ import { EmptyState } from '../components/EmptyState';
 import { PageContainer } from '../components/PageContainer';
 
 // Stagger animation for category cards
-const containerVariants = {
+const containerVariants: any = {
   hidden: {},
   show: {
     transition: {
@@ -18,7 +18,7 @@ const containerVariants = {
   },
 };
 
-const cardVariants = {
+const cardVariants: any = {
   hidden: { opacity: 0, y: 10 },
   show: {
     opacity: 1,
@@ -67,12 +67,12 @@ export const HomePage = () => {
   if (loading) {
     return (
       <PageContainer>
-        <div className="pt-6 pb-5 px-4 text-center bg-gradient-to-b from-green-50/40 via-white/20 to-transparent">
-          <h1 className="text-3xl font-bold text-gray-900">
+        <div className="pt-6 pb-5 px-4 text-center bg-gradient-to-b from-green-50/40 via-white/20 to-transparent dark:from-dark-surface/60 dark:via-dark-bg/20 dark:to-transparent transition-colors">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 transition-colors">
             <span className="text-2xl">🌿</span> JUSTWEED
           </h1>
-          <p className="text-gray-600 text-sm mt-1.5 font-medium">Premium Cannabis Store</p>
-          <p className="text-gray-400 text-xs mt-1">Local delivery · 30–90 min</p>
+          <p className="text-gray-600 dark:text-gray-300 text-sm mt-1.5 font-medium transition-colors">Premium Cannabis Store</p>
+          <p className="text-gray-400 dark:text-gray-500 text-xs mt-1 transition-colors">Local delivery · 30–90 min</p>
         </div>
         <div className="px-4 grid grid-cols-2 gap-3 mt-1">
           {[1, 2, 3, 4, 5, 6].map((i) => (
@@ -93,7 +93,7 @@ export const HomePage = () => {
           action={
             <button
               onClick={loadCategories}
-              className="bg-tg-button text-tg-button-text px-8 py-3 rounded-xl font-semibold active:scale-[0.98] transition-transform"
+              className="bg-accent text-dark-bg px-8 py-3 rounded-xl font-semibold shadow-lg shadow-accent/30 active:scale-[0.98] transition-all"
             >
               Retry
             </button>
@@ -117,14 +117,14 @@ export const HomePage = () => {
 
   return (
     <PageContainer>
-      <div className="max-w-[420px] mx-auto w-full">
+      <div className="max-w-[420px] mx-auto w-full pb-20">
         {/* Hero section with subtle gradient */}
-        <div className="pt-6 pb-5 px-4 text-center bg-gradient-to-b from-green-50/40 via-white/20 to-transparent">
-          <h1 className="text-3xl font-bold text-gray-900">
+        <div className="pt-6 pb-5 px-4 text-center bg-gradient-to-b from-green-50/40 via-white/20 to-transparent dark:from-dark-surface/60 dark:via-dark-bg/20 dark:to-transparent transition-colors">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 transition-colors">
             <span className="text-2xl">🌿</span> JUSTWEED
           </h1>
-          <p className="text-gray-600 text-sm mt-1.5 font-medium">Premium Cannabis Store</p>
-          <p className="text-gray-400 text-xs mt-1">Local delivery · 30–90 min</p>
+          <p className="text-gray-600 dark:text-gray-300 text-sm mt-1.5 font-medium transition-colors">Premium Cannabis Store</p>
+          <p className="text-gray-400 dark:text-gray-500 text-xs mt-1 transition-colors">Local delivery · 30–90 min</p>
         </div>
 
         <motion.div

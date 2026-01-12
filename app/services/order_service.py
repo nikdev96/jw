@@ -20,22 +20,36 @@ class OrderService:
     ) -> Order:
         """Create new order with items. Validates products and calculates total."""
 
+        # Check for duplicate product_ids
+        seen_ids = set()
+        for item in order_data.items:
+            if item.product_id in seen_ids:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail=f"Duplicate product_id: {item.product_id}"
+                )
+            seen_ids.add(item.product_id)
+
         # Get all products
-        product_ids = [item.product_id for item in order_data.items]
+        product_ids = list(seen_ids)
         products = await ProductService.get_by_ids(session, product_ids)
 
+        # More informative error about missing products
         if len(products) != len(product_ids):
+            found_ids = {p.id for p in products}
+            missing_ids = [pid for pid in product_ids if pid not in found_ids]
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail="Some products not found"
+                detail=f"Products not found: {missing_ids}"
             )
 
-        # Check if all products are active
+        # More informative error about inactive products
         inactive_products = [p for p in products if not p.is_active]
         if inactive_products:
+            inactive_ids = [p.id for p in inactive_products]
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Some products are not available"
+                detail=f"Products not available: {inactive_ids}"
             )
 
         # Create products dict for easy access

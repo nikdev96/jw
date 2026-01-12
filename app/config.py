@@ -13,6 +13,8 @@ class Settings(BaseSettings):
     TELEGRAM_BOT_TOKEN: str
     MANAGER_CHAT_ID: int
     DEBUG: bool = False
+    FRONTEND_URL: str = "https://surfjw.surf"
+    FRONTEND_DEV_URL: str = "http://localhost:5173"
 
 
 settings = Settings()

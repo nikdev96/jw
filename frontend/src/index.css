@@ -25,6 +25,13 @@ body {
   color: var(--tg-theme-text-color);
   overflow-x: hidden;
   touch-action: pan-y;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Dark mode styles */
+.dark body {
+  background: #0F1115;
+  color: #EDEFF3;
 }
 
 #root {
@@ -54,4 +61,14 @@ img {
 
 .animate-fadeIn {
   animation: fadeIn 0.2s ease-out;
+}
+
+/* Hide scrollbar for horizontal scroll */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari and Opera */
 }

@@ -11,7 +11,9 @@ import { CategoryPage } from './pages/CategoryPage';
 import { CartPage } from './pages/CartPage';
 import { CheckoutPage } from './pages/CheckoutPage';
 import { OrderSuccessPage } from './pages/OrderSuccessPage';
-import { FloatingCart } from './components/FloatingCart';
+import { SupportPage } from './pages/SupportPage';
+import { BottomNavigation } from './components/BottomNavigation';
+// import { FloatingCart } from './components/FloatingCart'; // Replaced by BottomNavigation
 
 // iOS-style page transition variants
 const pageVariants = {
@@ -20,41 +22,48 @@ const pageVariants = {
   exit: { opacity: 0, x: -20 },
 };
 
-const pageTransition = {
+const pageTransition: any = {
   type: 'tween',
   ease: 'easeOut',
   duration: 0.25,
 };
 
 function AppContent() {
-  const { initData } = useTelegram();
+  const { initData, colorScheme } = useTelegram();
   const [cart, setCart] = useState<CartItem[]>([]);
   const location = useLocation();
+
+  // Apply theme from Telegram
+  useEffect(() => {
+    if (colorScheme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [colorScheme]);
 
   useEffect(() => {
     if (initData) {
       setInitData(initData);
     }
 
+    // Cart sync - poll localStorage for cart changes
     setCart(getCart());
-
     const handleStorageChange = () => {
       setCart(getCart());
     };
-
     window.addEventListener('storage', handleStorageChange);
-
     const interval = setInterval(() => {
       setCart(getCart());
     }, 1000);
-
     return () => {
       window.removeEventListener('storage', handleStorageChange);
       clearInterval(interval);
     };
   }, [initData]);
 
-  const isCartPage = location.pathname.match(/\/(cart|checkout|order-success)/);
+  // Hide bottom nav on checkout and success pages
+  const hideBottomNav = location.pathname.match(/\/(checkout|order-success)/);
 
   return (
     <div className="min-h-screen">
@@ -71,13 +80,15 @@ function AppContent() {
             <Route path="/" element={<HomePage />} />
             <Route path="/category/:id" element={<CategoryPage />} />
             <Route path="/cart" element={<CartPage />} />
+            <Route path="/support" element={<SupportPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/order-success" element={<OrderSuccessPage />} />
           </Routes>
         </motion.div>
       </AnimatePresence>
 
-      {!isCartPage && <FloatingCart cart={cart} />}
+      {/* Bottom Navigation - Shows on main screens (home, cart, support) */}
+      {!hideBottomNav && <BottomNavigation />}
     </div>
   );
 }
