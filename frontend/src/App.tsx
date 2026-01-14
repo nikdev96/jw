@@ -1,10 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTelegram } from './hooks/useTelegram';
 import { setInitData } from './api/client';
-import { getCart } from './utils/cart';
-import { CartItem } from './types';
 
 import { HomePage } from './pages/HomePage';
 import { CategoryPage } from './pages/CategoryPage';
@@ -30,7 +28,6 @@ const pageTransition: any = {
 
 function AppContent() {
   const { initData, colorScheme } = useTelegram();
-  const [cart, setCart] = useState<CartItem[]>([]);
   const location = useLocation();
 
   // Apply theme from Telegram
@@ -46,20 +43,6 @@ function AppContent() {
     if (initData) {
       setInitData(initData);
     }
-
-    // Cart sync - poll localStorage for cart changes
-    setCart(getCart());
-    const handleStorageChange = () => {
-      setCart(getCart());
-    };
-    window.addEventListener('storage', handleStorageChange);
-    const interval = setInterval(() => {
-      setCart(getCart());
-    }, 1000);
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-      clearInterval(interval);
-    };
   }, [initData]);
 
   // Hide bottom nav on checkout and success pages

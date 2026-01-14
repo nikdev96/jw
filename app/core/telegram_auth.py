@@ -46,9 +46,9 @@ def verify_telegram_init_data(init_data: str) -> dict[str, Any]:
         f"{k}={v}" for k, v in sorted(parsed_data.items())
     )
 
-    # WebApp uses SHA256(bot_token) as secret_key (NOT "WebAppData")
-    # Note: Can be cached since bot_token doesn't change, but premature for MVP
-    secret_key = hashlib.sha256(settings.TELEGRAM_BOT_TOKEN.encode()).digest()
+    # Telegram WebApp verification: HMAC_SHA256(HMAC_SHA256(bot_token, "WebAppData"), data_check_string)
+    # See: https://core.telegram.org/bots/webapps#validating-data-received-via-the-mini-app
+    secret_key = hmac.new(b"WebAppData", settings.TELEGRAM_BOT_TOKEN.encode(), hashlib.sha256).digest()
 
     calculated_hash = hmac.new(
         key=secret_key,

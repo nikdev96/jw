@@ -41,7 +41,7 @@ class TelegramBotService:
     async def notify_new_order(order: Order) -> bool:
         """Send notification to manager about new order."""
         items_text = "\n".join([
-            f"• {html.escape(item.product_name)} × {item.quantity} = {item.price * item.quantity} ₽"
+            f"• {html.escape(item.product_name)} × {item.quantity} = {item.price * item.quantity} ฿"
             for item in order.items
         ])
 
@@ -61,7 +61,7 @@ class TelegramBotService:
 📦 <b>Состав заказа:</b>
 {items_text}
 
-💰 <b>Итого:</b> {order.total_amount} ₽
+💰 <b>Итого:</b> {order.total_amount} ฿
 {delivery_info}
 
 🕐 <b>Создан:</b> {order.created_at.strftime('%d.%m.%Y %H:%M')}

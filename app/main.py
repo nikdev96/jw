@@ -21,8 +21,13 @@ limiter = Limiter(key_func=get_remote_address)
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
-# Build allowed origins list
-allowed_origins = [settings.FRONTEND_URL]
+# Build allowed origins list - allow Telegram Mini Apps
+allowed_origins = [
+    settings.FRONTEND_URL,
+    "https://web.telegram.org",
+    "https://web.telegram.org/k",
+    "https://web.telegram.org/a",
+]
 if settings.DEBUG and settings.FRONTEND_DEV_URL:
     allowed_origins.append(settings.FRONTEND_DEV_URL)
 
@@ -30,8 +35,9 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE"],
-    allow_headers=["Content-Type", "Authorization"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization", "X-Requested-With"],
+    expose_headers=["Content-Length", "Content-Type"],
 )
 
 app.include_router(api_router, prefix="/api/v1")

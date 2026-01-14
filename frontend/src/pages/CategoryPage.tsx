@@ -321,6 +321,7 @@ export const CategoryPage = () => {
           onClose={() => setSelectedProduct(null)}
           onAddToCart={handleAddToCart}
           allProducts={getAllProducts()}
+          onProductSelect={setSelectedProduct}
         />
       </>
     );
@@ -410,6 +411,7 @@ export const CategoryPage = () => {
         onClose={() => setSelectedProduct(null)}
         onAddToCart={handleAddToCart}
         allProducts={getAllProducts()}
+        onProductSelect={setSelectedProduct}
       />
     </>
   );

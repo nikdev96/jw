@@ -9,6 +9,7 @@ interface ProductPreviewModalProps {
   onClose: () => void;
   onAddToCart: (product: Product) => void;
   allProducts?: Product[]; // For related products
+  onProductSelect?: (product: Product) => void; // Switch to another product
 }
 
 export const ProductPreviewModal = ({
@@ -17,6 +18,7 @@ export const ProductPreviewModal = ({
   onClose,
   onAddToCart,
   allProducts = [],
+  onProductSelect,
 }: ProductPreviewModalProps) => {
   const navigate = useNavigate();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -174,13 +176,9 @@ export const ProductPreviewModal = ({
                     products={relatedProducts}
                     onAddToCart={onAddToCart}
                     onProductClick={(relatedProduct) => {
-                      // Switch to related product in modal
-                      onClose();
-                      // Small delay for smooth transition
-                      setTimeout(() => {
-                        // This would need to be handled by parent component
-                        // For now, just close
-                      }, 100);
+                      if (onProductSelect) {
+                        onProductSelect(relatedProduct);
+                      }
                     }}
                   />
                 </div>
