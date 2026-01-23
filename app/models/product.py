@@ -1,8 +1,13 @@
 from decimal import Decimal
+from typing import TYPE_CHECKING
 from sqlalchemy import String, Integer, ForeignKey, Numeric, Text, JSON, CheckConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
+
+if TYPE_CHECKING:
+    from app.models.category import Category
+    from app.models.order_item import OrderItem
 
 
 class Product(Base):

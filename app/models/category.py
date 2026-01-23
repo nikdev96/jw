@@ -1,8 +1,12 @@
 from sqlalchemy import String, Integer, Boolean, ForeignKey
+from typing import TYPE_CHECKING, Optional
+from sqlalchemy import String, Integer, ForeignKey, Boolean
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from typing import Optional
 
 from app.database import Base
+
+if TYPE_CHECKING:
+    from app.models.product import Product
 
 
 class Category(Base):
