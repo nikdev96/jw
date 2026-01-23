@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTelegram } from './hooks/useTelegram';
 import { setInitData } from './api/client';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 import { HomePage } from './pages/HomePage';
 import { CategoryPage } from './pages/CategoryPage';
@@ -79,7 +80,9 @@ function AppContent() {
 function App() {
   return (
     <BrowserRouter>
-      <AppContent />
+      <ErrorBoundary>
+        <AppContent />
+      </ErrorBoundary>
     </BrowserRouter>
   );
 }

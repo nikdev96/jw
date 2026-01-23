@@ -51,5 +51,5 @@ export interface Order {
   comment: string | null;
   created_at: string;
   updated_at: string;
-  items: any[];
+  items: OrderItem[];
 }
